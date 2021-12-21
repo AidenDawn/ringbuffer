@@ -10,7 +10,7 @@ import threading
 import time
 import unittest
 
-import ringbuffer
+from context import ringbuffer
 
 
 class SlotArrayTest(unittest.TestCase):
@@ -67,7 +67,7 @@ class ReadersWriterLockTest(unittest.TestCase):
     def reader_count(self):
         return self.lock.readers.value
 
-    def async(self, func):
+    def asyncFunc(self, func):
         def wrapper(result_queue):
             result = func()
             result_queue.put(result)
@@ -127,7 +127,7 @@ class ReadersWriterLockTest(unittest.TestCase):
                     self.assert_readers(1)
                     return 'read'
 
-            r = self.async(test)
+            r = self.asyncFunc(test)
 
             # Wait until we can confirm that the reader is locked out.
             event.wait()
@@ -153,8 +153,8 @@ class ReadersWriterLockTest(unittest.TestCase):
                     after_read.wait()
                     return value
 
-            r1 = self.async(test)
-            r2 = self.async(test)
+            r1 = self.asyncFunc(test)
+            r2 = self.asyncFunc(test)
 
             # Wait until we can confirm that all readers are locked out
             before_read.wait()
@@ -180,7 +180,7 @@ class ReadersWriterLockTest(unittest.TestCase):
                     self.assert_writer()
                     return 'written'
 
-            writer = self.async(test)
+            writer = self.asyncFunc(test)
 
             # Wait until we can confirm that all writers are locked out.
             before_write.wait()
@@ -210,8 +210,8 @@ class ReadersWriterLockTest(unittest.TestCase):
                     self.assert_writer()
                     return 'written'
 
-            reader = self.async(test_reader)
-            writer = self.async(test_writer)
+            reader = self.asyncFunc(test_reader)
+            writer = self.asyncFunc(test_writer)
 
             # Wait for the write to be blocked by multiple readers.
             before_read.wait()
@@ -233,7 +233,7 @@ class ReadersWriterLockTest(unittest.TestCase):
                     self.assert_writer()
                     return 'written'
 
-            writer = self.async(test)
+            writer = self.asyncFunc(test)
 
             before_write.wait()
             self.assert_writer()
@@ -253,7 +253,7 @@ class ReadersWriterLockTest(unittest.TestCase):
                     event.set()
                     return 'written'
 
-            writer = self.async(test)
+            writer = self.asyncFunc(test)
 
             while not event.is_set():
                 self.assert_readers(1)
@@ -276,7 +276,7 @@ class ReadersWriterLockTest(unittest.TestCase):
                     event.set()
                     return 'written'
 
-            writer = self.async(test)
+            writer = self.asyncFunc(test)
 
             event.wait()
             # Force a context switch so the writer is waiting

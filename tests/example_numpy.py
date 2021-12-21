@@ -6,7 +6,7 @@ import multiprocessing
 
 import numpy
 import numpy.matlib
-import ringbuffer
+from context import ringbuffer
 
 
 def writer(ring):

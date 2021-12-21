@@ -15,7 +15,7 @@ import struct
 import time
 import zlib
 
-import ringbuffer
+from context import ringbuffer
 
 
 FLAGS = argparse.ArgumentParser()

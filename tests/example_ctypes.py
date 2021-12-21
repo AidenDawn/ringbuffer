@@ -8,7 +8,7 @@ import os
 import random
 import time
 
-import ringbuffer
+from context import ringbuffer
 
 
 class Record(ctypes.Structure):
