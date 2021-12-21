@@ -16,7 +16,7 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     packages=["ringbuffer"],
-    license="APACHE-2.0",
+    license="Apache-2.0",
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha
